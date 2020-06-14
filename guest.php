@@ -39,7 +39,11 @@ if( isset($_SESSION['success'])){
     
 
 ?>
-
+<style>
+td {
+    border: solid 2px lightgrey;
+}
+</style>
 <h3>Please enter guest member details</h3>
 <form method="post">
 <p>Enter guest name:
@@ -63,8 +67,6 @@ $sql2 = "SELECT g.name, g.relation, g.dob FROM guest_member g WHERE g.gym_id = :
 $stmt2 = $pdo->prepare($sql2);
 $stmt2->execute(array(
     ':id' => $_SESSION['gym_id']));
-
-echo'</table>';
 
 echo '<table border:1px>';
 echo "<tr>";
