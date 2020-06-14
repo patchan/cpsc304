@@ -52,26 +52,37 @@ if( isset($_SESSION['success'])){
 <a href="<?php echo($_SERVER['PHP_SELF']);?>">Refresh</a></p>
 </form>
 <p>
+
+<br> <br>
+<h3>Guest Members</h3>
     
     
-    <?php
-$stmt2 = $pdo->query("SELECT * FROM lift");
+<?php
+
+$sql2 = "SELECT g.name, g.relation, g.dob FROM guest_member g WHERE g.gym_id = :id";
+$stmt2 = $pdo->prepare($sql2);
+$stmt2->execute(array(
+    ':id' => $_SESSION['gym_id']));
+
+echo'</table>';
+
 echo '<table border:1px>';
+echo "<tr>";
+    
+echo "<td>Name</td>";
+echo "<td>Relation</td>";
+echo "<td>DOB</td>";
+
+echo "</tr>";
 while( $row = $stmt2->fetch(PDO::FETCH_ASSOC)){
+
 echo "<tr><td>";
-echo $row['gym_id'];
-echo "</td><td>";
-    
-        echo('<a href="directory.php?gym_id='.$row['gym_id'].'&exercise_id='.$row['exercise_id'].'&time='.$row['time'].'&date='.$row['date'].'&reps='.$row['reps'].'&sets='.$row['sets'].'&weight_in_kg='.$row['weight_in_kg'].'  ">Click</a> / ');
 
-    echo "</td><td>";
-
-    
-echo $row['exercise_id'];
- echo "</td><td>";
-echo $row['time'];
+echo $row['name'];
 echo "</td><td>";
-echo $row['date'];
+echo $row['relation'];
+echo "</td><td>";
+echo $row['dob'];
 echo "</td></tr>";
 
 }

@@ -100,17 +100,14 @@ echo "<td>Edit a workout</td>";
 
 
 
-echo "</td>
-
-
-</tr>";
+echo "</td></tr>";
 while( $row = $stmt2->fetch(PDO::FETCH_ASSOC)){
 
 echo "<tr><td>";
     
 
 echo $row['name'];
- echo "</td><td>";
+echo "</td><td>";
 echo $row['time'];
 echo "</td><td>";
 echo $row['date'];
@@ -122,8 +119,6 @@ echo "</td><td>";
 echo $row['avg_HR'];
 echo "</td><td>";
 echo('<a href="edit.php?name='.$row['name'].'&time='.$row['time'].'&exercise_id='.$row['exercise_id'].'&date='.$row['date'].'&distance_in_km='.$row['distance_in_km'].'&duration='.$row['duration'].'&avg_HR='.$row['avg_HR'].'  ">Edit</a>');
-
-echo "</td><td>";
     
 echo "</td></tr>";
 
