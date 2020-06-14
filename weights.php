@@ -19,35 +19,44 @@ if ( ! isset($_SESSION['gym_id']) ) {
 if ( isset($_POST['exercise']) && isset($_POST['time']) && isset($_POST['date']) && isset($_POST['reps']) && isset($_POST['sets']) && isset($_POST['weight'])  ) {
     echo("<p>Handling POST data...</p>\n");
 
-    $sql1 = "SELECT exercise_id FROM exercises
+    $sql0 = "SELECT exercise_id FROM exercises
         WHERE name =  :nm";
 
-    echo "<p>$sql1</p>\n";
-
-    $stmt = $pdo->prepare($sql1);
-    $stmt->execute(array(
+    $stmt0 = $pdo->prepare($sql0);
+    $stmt0->execute(array(
         ':nm' => $_POST['exercise']));
+
+    $result = $stmt0->fetch(PDO::FETCH_ASSOC);
+
+
+    $sql1 = "INSERT INTO lift(gym_id, exercise_id, time, date, reps, sets, weight_in_kg)
+        VALUES (:g, :e, :t, :d, :r, :s, :w)";
+
+    $stmt1 = $pdo->prepare($sql1);
+    $stmt1->execute(array(
+        ':g' => $_SESSION['gym_id'], 
+        ':e' => $result['exercise_id'],
+        ':t' => $_POST['time'],
+        ':d' => $_POST['date'],
+        ':r' => $_POST['reps'],
+        ':s' => $_POST['sets'],
+        ':w' => $_POST['weight']
+    ));
     
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        echo $row['exercise_id'];
-
-   if ( $row === FALSE ) {
-      echo "<h1>Login incorrect.</h1>\n";
-   } else { 
-      echo "<p>Record Added.</p>\n";
-   }
-} else{
-        echo("<p>Please enter data into all fields</p>\n");
-
-
+    echo '<h4> Exercise log added successfully </h4>';
+   
+} else {
+    echo("<p>Please enter data into all fields</p>\n");
 }
+
+
 ?>
 <style>
 td {
     border: solid 2px lightgrey;
 }
 </style>
-<p>Enter data</p>
+<h2>Enter data</h2>
 <form method="post">
 <p>Exercise:
 <input type="text" size="40" name="exercise"></p>
@@ -68,11 +77,15 @@ td {
 <input type="button" value="Logout" 
 onClick="window.location = 'logout.php'" />    
     
-    <h3>Autos</h3> <br> <br>
 
+<br> <br>
+<h3>Logged Exercise</h3>
 
 <?php
-$stmt2 = $pdo->query("SELECT exercises.name, lift.exercise_id, lift.time, lift.date, lift.reps, lift.sets, lift.weight_in_kg  FROM lift INNER JOIN exercises ON exercises.exercise_id = lift.exercise_id");
+$sql2 = "SELECT e.name, l.exercise_id, l.time, l.date, l.reps, l.sets, l.weight_in_kg FROM lift l INNER JOIN exercises e ON e.exercise_id = l.exercise_id WHERE l.gym_id = :id";
+$stmt2 = $pdo->prepare($sql2);
+$stmt2->execute(array(
+    ':id' => $_SESSION['gym_id'])); 
 echo '<table border:1px>';
 echo "<tr><td>";
     

@@ -43,7 +43,7 @@ if (isset($_POST['exercise']) && isset($_POST['time']) && isset($_POST['date']) 
         ':h' => $_POST['avg_HR']
     ));
 
-    echo '<h2> Exercise log added successfully </h2>';
+    echo '<h4> Exercise log added successfully </h4>';
 
 
 } else{
