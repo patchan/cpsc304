@@ -15,6 +15,19 @@ if ( ! isset($_SESSION['gym_id']) ) {
     die('Not logged in');
 }
 
+if ( isset($_GET['delete']) ) {
+    $sqlDelete  = ' DELETE FROM perform WHERE exercise_id = '.$_GET['exercise_id'].
+    ' AND date = "'.$_GET['date'].'"'.
+    ' AND time = "'.$_GET['time'].'"'.
+    ' AND gym_id = '.$_SESSION['gym_id'];
+    
+    echo($sqlDelete);
+
+    $pdo->query($sqlDelete);
+    
+    unset($_GET['delete']);
+}
+
 
 if (isset($_POST['exercise']) && isset($_POST['time']) && isset($_POST['date']) && isset($_POST['distance_in_km']) && isset($_POST['duration']) && isset($_POST['avg_HR'])  ) {
     echo("<p>Handling POST data...</p>\n");
@@ -119,6 +132,8 @@ echo "</td><td>";
 echo $row['avg_HR'];
 echo "</td><td>";
 echo('<a href="edit.php?name='.$row['name'].'&time='.$row['time'].'&exercise_id='.$row['exercise_id'].'&date='.$row['date'].'&distance_in_km='.$row['distance_in_km'].'&duration='.$row['duration'].'&avg_HR='.$row['avg_HR'].'  ">Edit</a>');
+echo "</td><td>";
+echo('<a href="cardio.php?delete=true'.'&exercise_id='.$row['exercise_id'].'&time='.$row['time'].'&date='.$row['date'].'  ">Delete</a>');
     
 echo "</td></tr>";
 

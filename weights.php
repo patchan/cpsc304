@@ -15,6 +15,18 @@ if ( ! isset($_SESSION['gym_id']) ) {
     die('Not logged in');
 }
 
+if ( isset($_GET['delete']) ) {
+    $sqlDelete  = ' DELETE FROM lift WHERE exercise_id = '.$_GET['exercise_id'].
+    ' AND date = "'.$_GET['date'].'"'.
+    ' AND time = "'.$_GET['time'].'"'.
+    ' AND gym_id = '.$_SESSION['gym_id'];
+    
+    echo($sqlDelete);
+
+    $pdo->query($sqlDelete);
+    
+    unset($_GET['delete']);
+}
 
 if ( isset($_POST['exercise']) && isset($_POST['time']) && isset($_POST['date']) && isset($_POST['reps']) && isset($_POST['sets']) && isset($_POST['weight'])  ) {
     echo("<p>Handling POST data...</p>\n");
@@ -119,6 +131,8 @@ echo "</td><td>";
 echo $row['weight_in_kg'];
 echo "</td><td>";
 echo('<a href="edit.php?name='.$row['name'].'&time='.$row['time'].'&exercise_id='.$row['exercise_id'].'&date='.$row['date'].'&reps='.$row['reps'].'&sets='.$row['sets'].'&weight_in_kg='.$row['weight_in_kg'].'  ">Edit</a>');
+echo "</td><td>";
+echo('<a href="weights.php?delete=true'.'&exercise_id='.$row['exercise_id'].'&time='.$row['time'].'&date='.$row['date'].'  ">Delete</a>');
     
 echo "</td></tr>";
 
