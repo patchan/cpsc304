@@ -7,6 +7,18 @@ if ( ! isset($_SESSION['gym_id']) ) {
 
 $tempName = '';
 
+if (isset($_GET['delete'])) {
+    $sql0 = "DELETE FROM guest_member 
+    WHERE gym_id = :g AND name = :n";
+
+    $stmt0 = $pdo->prepare($sql0);
+    $stmt0->execute(array(
+        ':g' => $_SESSION['gym_id'],
+        ':n' => $_GET['name']));
+    
+    unset($_GET['delete']);
+}
+
 if ( isset($_POST['name']) && isset($_POST['relation']) && isset($_POST['dob'])  ) {
 
     $sql = "INSERT INTO guest_member(gym_id, name, relation, dob) 
@@ -85,6 +97,8 @@ echo "</td><td>";
 echo $row['relation'];
 echo "</td><td>";
 echo $row['dob'];
+echo "</td><td>";
+echo('<a href="guest.php?delete=true'.'&name='.$row['name'].'  ">Delete</a>');
 echo "</td></tr>";
 
 }
